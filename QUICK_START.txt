@@ -1,0 +1,72 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          🤖 WhatsApp AI Bot - Quick Start Guide 🤖          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ SERVICES ARE RUNNING!
+
+📍 Setup URL: http://localhost:8080/
+📍 Dashboard URL: http://localhost:8080/dashboard/
+
+═══════════════════════════════════════════════════════════════
+
+🚀 GETTING STARTED (3 Simple Steps):
+
+Step 1: Open Your Browser
+   → Go to: http://localhost:8080/
+
+Step 2: Enter API Key
+   → Get free API key: https://aistudio.google.com/app/apikey
+   → Paste it in the setup form
+   → Click "Save & Continue"
+
+Step 3: Scan QR Code
+   → Open WhatsApp on your phone
+   → Settings → Linked Devices → Link a Device
+   → Scan the QR code shown on screen
+   → Wait for "Connected" message
+
+═══════════════════════════════════════════════════════════════
+
+✨ FEATURES:
+
+✓ Easy web-based setup (no manual configuration!)
+✓ API key saved automatically to .env file
+✓ QR code displayed in browser for easy scanning
+✓ Send messages from dashboard
+✓ View all conversations
+✓ Auto-reply with AI (Gemini 2.5 Flash)
+✓ Conversation history tracking
+✓ Real-time connection status
+
+═══════════════════════════════════════════════════════════════
+
+🔧 SERVICES:
+
+Django Server:     Port 8080 ✓
+WhatsApp Service:  Port 3000 ✓
+
+═══════════════════════════════════════════════════════════════
+
+📝 NEXT TIME YOU START:
+
+Just run: start_services.bat
+Then open: http://localhost:8080/
+
+═══════════════════════════════════════════════════════════════
+
+💡 TIPS:
+
+• Phone number format: Use country code without + or spaces
+  Example: 1234567890 (not +1 234-567-890)
+
+• The bot remembers last 20 messages per conversation
+
+• All messages are saved in db.sqlite3 database
+
+• To reconfigure API key, just go to setup page again
+
+═══════════════════════════════════════════════════════════════
+
+🎉 ENJOY YOUR AI-POWERED WHATSAPP BOT!

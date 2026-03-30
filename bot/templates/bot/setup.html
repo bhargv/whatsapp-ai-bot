@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp AI Bot - Setup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .setup-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .step-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .step-description {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group small {
+            display: block;
+            color: #6b7280;
+            margin-top: 6px;
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+
+        .qr-container {
+            text-align: center;
+            padding: 30px;
+            background: #f9fafb;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        #qrcode {
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-indicator.connected {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .status-indicator.loading {
+            background: #f59e0b;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+
+        .link-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .instruction-list {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .instruction-list ol {
+            margin-left: 20px;
+        }
+
+        .instruction-list li {
+            margin-bottom: 10px;
+            color: #374151;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="header">
+            <h1>🤖 WhatsApp AI Bot</h1>
+            <p>Easy Setup in 3 Steps</p>
+        </div>
+
+        <div class="card">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 33%"></div>
+            </div>
+
+            <!-- Step 1: API Key -->
+            <div class="step active" id="step1">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h2 class="step-title">Configure API Key</h2>
+                    <p class="step-description">Enter your Google Gemini API key to enable AI responses</p>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Don't have an API key?</strong><br>
+                    Get one free at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #1e40af; font-weight: 600;">Google AI Studio</a>
+                </div>
+
+                <form id="apiKeyForm">
+                    <div class="form-group">
+                        <label for="apiKey">Gemini API Key</label>
+                        <input
+                            type="text"
+                            id="apiKey"
+                            placeholder="AIzaSy..."
+                            required
+                        >
+                        <small>Your API key will be saved securely in the .env file</small>
+                    </div>
+
+                    <div id="apiKeyAlert"></div>
+
+                    <button type="submit" class="btn btn-primary" id="saveApiKeyBtn">
+                        Save & Continue
+                    </button>
+                </form>
+            </div>
+
+            <!-- Step 2: Connect WhatsApp -->
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h2 class="step-title">Connect WhatsApp</h2>
+                    <p class="step-description">Scan the QR code with your WhatsApp mobile app</p>
+                </div>
+
+                <div class="instruction-list">
+                    <ol>
+                        <li>Open <strong>WhatsApp</strong> on your phone</li>
+                        <li>Go to <strong>Settings</strong> → <strong>Linked Devices</strong></li>
+                        <li>Tap <strong>Link a Device</strong></li>
+                        <li>Scan the QR code below</li>
+                    </ol>
+                </div>
+
+                <div id="connectionStatus">
+                    <div class="qr-container">
+                        <p style="color: #6b7280; margin-bottom: 15px;">
+                            <span class="status-indicator loading"></span>
+                            Waiting for QR code...
+                        </p>
+                        <div id="qrcode"></div>
+                    </div>
+                </div>
+
+                <div id="resetAlert"></div>
+
+                <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
+                    Back
+                </button>
+                <button type="button" class="btn btn-primary" onclick="resetWhatsApp()" id="resetBtn" style="background: #ef4444; margin-top: 10px;">
+                    🔄 Reset WhatsApp Connection
+                </button>
+            </div>
+
+            <!-- Step 3: Success -->
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <div class="step-number">✓</div>
+                    <h2 class="step-title">All Set!</h2>
+                    <p class="step-description">Your WhatsApp AI Bot is ready to use</p>
+                </div>
+
+                <div style="text-align: center; padding: 40px 0;">
+                    <div class="success-icon">✅</div>
+                    <h3 style="color: #333; margin-bottom: 15px;">Setup Complete!</h3>
+                    <p style="color: #666; margin-bottom: 30px;">
+                        Your bot is now connected and ready to respond to messages automatically.
+                    </p>
+
+                    <a href="/dashboard" class="link-button">
+                        Go to Dashboard →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        let currentStep = 1;
+        let statusCheckInterval;
+
+        // Step navigation
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
+
+            // Update progress bar
+            const progress = (step / 3) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Start checking WhatsApp status on step 2
+            if (step === 2) {
+                checkWhatsAppStatus();
+                statusCheckInterval = setInterval(checkWhatsAppStatus, 3000);
+            } else {
+                if (statusCheckInterval) {
+                    clearInterval(statusCheckInterval);
+                }
+            }
+        }
+
+        // Save API Key
+        document.getElementById('apiKeyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const saveBtn = document.getElementById('saveApiKeyBtn');
+            const alertDiv = document.getElementById('apiKeyAlert');
+
+            if (!apiKey.startsWith('AIza')) {
+                alertDiv.innerHTML = '<div class="alert alert-error">Invalid API key format. It should start with "AIza"</div>';
+                return;
+            }
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            alertDiv.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/save-api-key/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ api_key: apiKey })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alertDiv.innerHTML = '<div class="alert alert-success">✓ API key saved successfully!</div>';
+                    setTimeout(() => goToStep(2), 1000);
+                } else {
+                    alertDiv.innerHTML = `<div class="alert alert-error">❌ Error: ${data.error}</div>`;
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save & Continue';
+                }
+            } catch (error) {
+                alertDiv.innerHTML = `<div class="alert alert-error">❌ Failed to save: ${error.message}</div>`;
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save & Continue';
+            }
+        });
+
+        // Check WhatsApp connection status
+        async function checkWhatsAppStatus() {
+            try {
+                const response = await fetch('/api/status/');
+                const data = await response.json();
+
+                const connectionStatus = document.getElementById('connectionStatus');
+
+                if (data.ready) {
+                    clearInterval(statusCheckInterval);
+                    connectionStatus.innerHTML = `
+                        <div class="qr-container">
+                            <p style="color: #10b981; font-size: 1.2rem; font-weight: 600;">
+                                <span class="status-indicator connected"></span>
+                                WhatsApp Connected!
+                            </p>
+                            <p style="color: #666; margin-top: 10px;">Redirecting to final step...</p>
+                        </div>
+                    `;
+                    setTimeout(() => goToStep(3), 2000);
+                } else if (data.qrCode) {
+                    connectionStatus.innerHTML = `
+                        <div class="qr-container">
+                            <p style="color: #6b7280; margin-bottom: 15px;">
+                                <span class="status-indicator loading"></span>
+                                Scan this QR code with WhatsApp
+                            </p>
+                            <div id="qrcode"></div>
+                        </div>
+                    `;
+
+                    // Generate QR code
+                    const qrcodeDiv = document.getElementById('qrcode');
+                    if (qrcodeDiv && typeof QRCode !== 'undefined') {
+                        qrcodeDiv.innerHTML = '';
+                        try {
+                            new QRCode(qrcodeDiv, {
+                                text: data.qrCode,
+                                width: 256,
+                                height: 256,
+                                colorDark: "#000000",
+                                colorLight: "#ffffff",
+                                correctLevel: QRCode.CorrectLevel.H
+                            });
+                        } catch (err) {
+                            console.error('QR Code generation error:', err);
+                            qrcodeDiv.innerHTML = '<p style="color: red;">Error generating QR code. Please refresh the page.</p>';
+                        }
+                    } else {
+                        console.error('QRCode library not loaded or qrcode div not found');
+                    }
+                } else {
+                    connectionStatus.innerHTML = `
+                        <div class="qr-container">
+                            <p style="color: #6b7280;">
+                                <span class="status-indicator loading"></span>
+                                Waiting for WhatsApp service...
+                            </p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Status check failed:', error);
+                const connectionStatus = document.getElementById('connectionStatus');
+                connectionStatus.innerHTML = `
+                    <div class="qr-container">
+                        <p style="color: #ef4444;">
+                            ❌ Cannot connect to WhatsApp service
+                        </p>
+                        <p style="color: #666; margin-top: 10px; font-size: 0.9rem;">
+                            Make sure the WhatsApp service is running on port 3000
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Reset WhatsApp connection
+        async function resetWhatsApp() {
+            const resetBtn = document.getElementById('resetBtn');
+            const alertDiv = document.getElementById('resetAlert');
+
+            if (!confirm('Are you sure you want to reset the WhatsApp connection? You will need to scan the QR code again.')) {
+                return;
+            }
+
+            resetBtn.disabled = true;
+            resetBtn.textContent = 'Resetting...';
+            alertDiv.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/reset-whatsapp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alertDiv.innerHTML = '<div class="alert alert-success">✓ WhatsApp connection reset! Waiting for new QR code...</div>';
+                    setTimeout(() => {
+                        alertDiv.innerHTML = '';
+                        checkWhatsAppStatus();
+                    }, 2000);
+                } else {
+                    alertDiv.innerHTML = `<div class="alert alert-error">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                alertDiv.innerHTML = `<div class="alert alert-error">❌ Failed to reset: ${error.message}</div>`;
+            } finally {
+                resetBtn.disabled = false;
+                resetBtn.textContent = '🔄 Reset WhatsApp Connection';
+            }
+        }
+
+        // Check if already configured
+        window.addEventListener('load', async () => {
+            console.log('Page loaded, checking configuration...');
+            try {
+                const response = await fetch('/api/check-config/');
+                const data = await response.json();
+
+                if (data.configured) {
+                    // Skip to step 2 if API key already exists
+                    console.log('API key already configured, going to step 2');
+                    goToStep(2);
+                }
+            } catch (error) {
+                console.error('Config check failed:', error);
+            }
+        });
+    </script>
+</body>
+</html>

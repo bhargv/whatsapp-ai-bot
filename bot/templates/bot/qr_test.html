@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        #qrcode {
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            display: inline-block;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WhatsApp QR Code Test</h1>
+    <div class="status" id="status">Loading...</div>
+    <div id="qrcode"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        async function loadQR() {
+            const statusDiv = document.getElementById('status');
+            const qrcodeDiv = document.getElementById('qrcode');
+
+            try {
+                statusDiv.textContent = 'Fetching QR code from WhatsApp service...';
+
+                const response = await fetch('http://localhost:3000/status');
+                const data = await response.json();
+
+                statusDiv.textContent = 'QR Code data received: ' + data.qrCode.substring(0, 50) + '...';
+
+                if (data.qrCode) {
+                    qrcodeDiv.innerHTML = '';
+                    new QRCode(qrcodeDiv, {
+                        text: data.qrCode,
+                        width: 256,
+                        height: 256,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff"
+                    });
+                    statusDiv.textContent = '✓ QR Code generated! Scan with WhatsApp.';
+                    statusDiv.style.background = '#d1fae5';
+                    statusDiv.style.color = '#065f46';
+                } else if (data.ready) {
+                    statusDiv.textContent = '✓ WhatsApp already connected!';
+                    statusDiv.style.background = '#d1fae5';
+                    statusDiv.style.color = '#065f46';
+                }
+            } catch (error) {
+                statusDiv.textContent = '❌ Error: ' + error.message;
+                statusDiv.style.background = '#fee2e2';
+                statusDiv.style.color = '#991b1b';
+                console.error('Error:', error);
+            }
+        }
+
+        loadQR();
+        setInterval(loadQR, 5000);
+    </script>
+</body>
+</html>
