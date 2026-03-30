@@ -1,10 +1,10 @@
 # WhatsApp AI Bot
 
-Django application with WhatsApp Web integration and AI-powered auto-replies using Claude.
+Django application with WhatsApp Web integration and AI-powered auto-replies using Gemini API.
 
 ## Features
 - QR code login for WhatsApp Web
-- AI-powered message responses using Claude API
+- AI-powered message responses using Gemini API
 - Conversation history tracking
 - REST API for message processing
 
@@ -21,9 +21,9 @@ npm install
 ```
 
 ### 3. Configure Environment Variables
-Copy `.env.example` to `.env` and add your Anthropic API key:
+Copy `.env.example` to `.env` and add your Gemini API key:
 ```bash
-ANTHROPIC_API_KEY=your_actual_api_key_here
+GEMINI_API_KEY=your_actual_api_key_here
 ```
 
 ### 4. Run Database Migrations
@@ -54,7 +54,7 @@ python manage.py runserver
 
 1. WhatsApp service connects via QR code
 2. Incoming messages are sent to Django API
-3. Claude AI generates contextual replies
+3. Gemini AI generates contextual replies
 4. Responses are sent back through WhatsApp
 
 ## API Endpoints
